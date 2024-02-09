@@ -1,0 +1,53 @@
+storage:
+  kafka:
+    url: localhost:9092
+
+spring:
+  main:
+    web-application-type: reactive
+  application:
+    name: storage
+  data:
+    r2dbc:
+      repositories:
+        enabled: true
+  r2dbc:
+    pool:
+      enabled: true
+      initial-size: 10
+      max-idle-time: 1m
+      max-size: 30
+    url: r2dbc:postgresql://localhost:5433/storage
+    username: postgres
+    password: postgres
+  liquibase:
+    change-log: db/changelog/changelog-master.yaml
+    url: jdbc:postgresql://localhost:5433/storage
+    user: ${spring.r2dbc.username}
+    password: ${spring.r2dbc.password}
+  zipkin:
+    baseUrl: http://localhost:9411
+
+management:
+  endpoint:
+    startup:
+      enabled: true
+      health:
+        probes:
+          enabled: true
+        show-details: always
+        group:
+          readiness:
+            include: r2dbc
+          liveness:
+            include: r2dbc
+            
+server:
+  port: 8082
+  
+eureka:
+  client:
+    service-url:
+      register-with-eureka: true
+      fetch-registry: true
+      default-zone: http://localhost:8761/eureka/

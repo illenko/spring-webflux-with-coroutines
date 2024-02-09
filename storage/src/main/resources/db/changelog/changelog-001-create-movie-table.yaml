@@ -1,0 +1,36 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1-1
+      author: illenko
+      comment: Create movie table
+      changes:
+        - createTable:
+            tableName: movie
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                  defaultValueComputed: ${uuid_default}
+              - column:
+                  name: title
+                  type: varchar
+              - column:
+                  name: year
+                  type: integer
+              - column:
+                  name: genre
+                  type: varchar
+              - column:
+                  name: description
+                  type: varchar
+              - column:
+                  name: country
+                  type: varchar
+              - column:
+                  name: sourced_by
+                  type: varchar
+                  constraints:
+                    nullable: false

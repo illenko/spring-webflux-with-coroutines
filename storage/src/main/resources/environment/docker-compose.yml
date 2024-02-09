@@ -1,0 +1,10 @@
+services:
+  psql:
+    image: postgres
+    container_name: psql
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=storage

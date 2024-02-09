@@ -1,0 +1,80 @@
+spring:
+  main:
+    web-application-type: reactive
+  application:
+    name: endpoint
+  kafka:
+    producer:
+      properties:
+        spring:
+          json:
+            add:
+              type:
+                headers: false
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false
+  zipkin:
+    baseUrl: http://localhost:9411
+
+endpoint:
+  kafka:
+    url: localhost:9092
+    batch-size: 0
+server:
+  port: 8083
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  health:
+    circuitbreakers:
+      enabled: true
+      
+reactive:
+  feign:
+    client:
+      config:
+        httpBinClient:
+          options:
+            readTimeoutMillis: 2000
+            connectTimeoutMillis: 1000
+
+eureka:
+  client:
+    service-url:
+      register-with-eureka: true
+      fetch-registry: true
+      default-zone: http://localhost:8761/eureka/
+
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        registerHealthIndicator: true
+    instances:
+      FinderClient_search_String:
+        minimumNumberOfCalls: 10
+        failureRateThreshold: 50
+      StorageClient_findById_UUID:
+        minimumNumberOfCalls: 10
+        failureRateThreshold: 50
+      StorageClient_put_MovieRequest:
+        minimumNumberOfCalls: 10
+        failureRateThreshold: 50
+      StorageClient_post_MovieRequest:
+        minimumNumberOfCalls: 10
+        failureRateThreshold: 50
+      StorageClient_search_String:
+        minimumNumberOfCalls: 10
+        failureRateThreshold: 50
+      StorageClient_findAll:
+        minimumNumberOfCalls: 10
+        failureRateThreshold: 50
+  timelimiter:
+    configs:
+      default:
+        timeoutDuration: 20s

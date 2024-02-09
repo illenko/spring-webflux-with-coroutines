@@ -1,0 +1,25 @@
+spring:
+  main:
+    web-application-type: reactive
+  profiles:
+    active: dev
+  application:
+    name: finder
+  zipkin:
+    baseUrl: http://localhost:9411
+finder:
+  movie-db-client:
+    url: https://www.omdbapi.com
+  timeout:
+    connection: 180000
+    read: 180000
+    write: 180000
+server:
+  port: 8081
+
+eureka:
+  client:
+    service-url:
+      register-with-eureka: true
+      fetch-registry: true
+      default-zone: http://localhost:8761/eureka/
